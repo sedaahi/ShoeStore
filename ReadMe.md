@@ -18,6 +18,10 @@ online shopping website
 ```
 /ApplicationCore
 Install-Package Ardalis.Specification -v 5.2.0 
+
+/Infrastructure
+Install-Package Microsoft.EntityFrameworkCore -v 5.0.14
+Install-Package Npgsql.EntityFrameworkCore.PostgreSQL -v 5.0.10
 ```
 
 ### Resources
