@@ -1,6 +1,6 @@
 # ShoeStore
 
-Online alýþveriþ sitesi
+online shopping website
 
 ### Resources
 
