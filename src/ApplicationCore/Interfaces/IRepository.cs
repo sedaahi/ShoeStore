@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Interfaces
 {
+    //Veri devamlığını sağlamak için Ireposity kullandık //Bağımsız kılmak için
     public interface IRepository<T> where T: BaseEntity  // Generic yapı ile kategory/brand/product hepsiyle kullanabil ama where! BaseEntitydekiler
     {
         Task<T> GetByIdAsync(int id);    // Asenkron olarak id getir (Asenkron old. için task yazdık olmasa direk T GetById(int Id) derdik)
