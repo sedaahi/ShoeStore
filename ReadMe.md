@@ -38,3 +38,4 @@ Install-Package Ardalis.Specification.EntityFrameworkCore -v 5.2.0
 * https://github.com/yigith/TechMarket
 * https://github.com/dotnet-architecture/eShopOnContainers
 * https://www.connectionstrings.com/postgresql/
+* https://docs.microsoft.com/en-us/aspnet/core/fundamentals/localization?view=aspnetcore-5.0#localization-middleware  (Kültür Belirleme)

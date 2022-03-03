@@ -1,3 +1,4 @@
+﻿using ApplicationCore.Interfaces;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,6 +14,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Web.Data;
+using Web.Interfaces;
+using Web.Services;
 
 namespace Web
 {
@@ -39,12 +42,23 @@ namespace Web
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>)); //Eğersenden IRepository istenirse  EfRepository'yi ver(IRepository ApplicationCore Aracılığıyla kullanılıyor!)
+
+            services.AddScoped< IHomeViewModelService, HomeViewModelService >(); //senden IHomeViewModelService istenirce ona HomeViewModelService ver
+
             services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            var supportedCultures = new[] { "en-US" };      // Kültür değiştirme bu sayede ₺ yerine $ yapma
+            var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(supportedCultures[0])
+                .AddSupportedCultures(supportedCultures)
+                .AddSupportedUICultures(supportedCultures);
+
+            app.UseRequestLocalization(localizationOptions);
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
