@@ -39,3 +39,5 @@ Install-Package Ardalis.Specification.EntityFrameworkCore -v 5.2.0
 * https://github.com/dotnet-architecture/eShopOnContainers
 * https://www.connectionstrings.com/postgresql/
 * https://docs.microsoft.com/en-us/aspnet/core/fundamentals/localization?view=aspnetcore-5.0#localization-middleware  (Kültür Belirleme)
+* https://getbootstrap.com/docs/5.1/components/pagination/#alignment (Pagination)
+* https://gist.github.com/yigith/c6f999788b833dc3d22ac6332a053dd1 (Pagination sayfa ...)

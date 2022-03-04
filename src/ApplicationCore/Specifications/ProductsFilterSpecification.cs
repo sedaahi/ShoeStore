@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Specifications
 {
-    public class HomeFilterSpecification: Specification<Product>  //Productlara göre specification uygula
+    public class ProductsFilterSpecification : Specification<Product>  //Productlara göre specification uygula
     {
-        public HomeFilterSpecification(int? categoryId, int? brandId)
+        public ProductsFilterSpecification(int? categoryId, int? brandId)
         {
             if (categoryId.HasValue)
             {
@@ -20,6 +20,10 @@ namespace ApplicationCore.Specifications
             {
                 Query.Where(x => x.BrandId == brandId);
             }
+        }
+        public ProductsFilterSpecification(int? categoryId, int? brandId, int skip, int take) : this(categoryId, brandId)
+        {
+            Query.Skip(skip).Take(take);
         }
     }
 }

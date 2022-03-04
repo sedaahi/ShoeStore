@@ -2,6 +2,7 @@
 using ApplicationCore.Interfaces;
 using ApplicationCore.Specifications;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,10 +24,16 @@ namespace Web.Services
             _categoryRepo = categoryRepo;
             _brandRepo = brandRepo;
         }
-        public async Task<HomeViewModel> GetHomeViewModelAsync(int? categoryId, int? brandId)   //Anasayfa için ihtiyacı olanları göndermek için
+        public async Task<HomeViewModel> GetHomeViewModelAsync(int? categoryId, int? brandId, int page)
+        //Anasayfa için ihtiyacı olanları göndermek için
         {
+            var specAllProducts = new ProductsFilterSpecification(categoryId, brandId);  //bu kategoride ve markada kaç ürün var
+            int totalItems = await _productRepo.CountAsync(specAllProducts);   //bu kategoride ve markada kaç ürün var onları say 
+
+            int totalPages = (int)Math.Ceiling((double)totalItems / Constants.ITEMS_PER_PAGE);
+
             //filtreleme için önce  appcoreda specifications folder açtık sonra bunu yazdık
-            var specProducts = new HomeFilterSpecification(categoryId, brandId); 
+            var specProducts = new ProductsFilterSpecification(categoryId, brandId, (page - 1) * Constants.ITEMS_PER_PAGE, Constants.ITEMS_PER_PAGE);
 
             List<Product> products = await _productRepo.GetAllAsync(specProducts); // filitrelenen specProducts'ı buraya yazdık
             HomeViewModel vm = new HomeViewModel()
@@ -43,8 +50,19 @@ namespace Web.Services
                 new SelectListItem(x.Name, x.Id.ToString())).ToList(),
                 Brands = (await _brandRepo.GetAllAsync()).Select(x =>
                 new SelectListItem(x.Name, x.Id.ToString())).ToList(),
+
                 CategoryId =categoryId,
-                BrandId = brandId   //bunları HomeControler'a yapıştır
+                BrandId = brandId,   //bunları HomeControler'a yapıştır
+
+                PaginationInfo = new PaginationInfoViewModel()
+                {
+                    CurrentPage = page,
+                    ItemsOnPage = products.Count,
+                    TotalItems = totalItems,   //yukarıda bunun için  specAllProducts yazdık
+                    TotalPages = totalPages,   //yukarıda bunun için  totalPages hesapladik
+                    HasPrevious = page > 1,
+                    HasNext = page < totalPages,
+                }
             };
             return vm;
         }

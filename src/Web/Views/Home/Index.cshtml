@@ -6,15 +6,18 @@
 
 <h1>Products</h1>
 
-<div class="card mb-3 bg-light">   <!--Bootsrap Inline Forms-->
+<div class="card mb-3 bg-light">
+    <!--Bootsrap Inline Forms-->
     <div class="card-body">
-        <form class="row row-cols-sm-auto g-3 align-items-center">     <!--mobil de tüm ekranı kapla-normalde yan yana görün-->
+        <form class="row row-cols-sm-auto g-3 align-items-center">
+            <!--mobil de tüm ekranı kapla-normalde yan yana görün-->
             <div class="col-12">
                 <label>Category</label>         <!--Bir label bir select-->
             </div>
 
             <div class="col-12">
-                <select class="form-select" asp-items="Model.Categories" asp-for="CategoryId">     <!--Kategorileri getirmesi için-->
+                <select class="form-select" asp-items="Model.Categories" asp-for="CategoryId">
+                    <!--Kategorileri getirmesi için-->
                     <option value="">All</option>   <!--Seçili olmadan önce All yazması için-->
                 </select>
             </div>
@@ -40,7 +43,8 @@
 <div class="row">
     @foreach (var item in Model.Products)
     {
-        <div class="col-lg-3 col-md-4 col-sm-6 mb-3">         <!--large ekranda 4 sütün mediumda 3 smallda 1 sütün olsun-->
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+            <!--large ekranda 4 sütün mediumda 3 smallda 1 sütün olsun-->
             <div class="card">
                 <img src="~/img/products//@item.PictureUri" alt="Product Image" class="w-100" />
 
@@ -53,5 +57,48 @@
         </div>
     }
 </div>
+
+@{
+    var pi = Model.PaginationInfo;
+}
+
+<p class="text-center">
+    Showing @pi.Start - @pi.End of @pi.TotalItems items   <!--Sayfadaki ürünlerde ürün adet aralığı örn  4-6 aralığındaki ürünler 12 üründen - Showing 1-3 of 12-->
+</p>
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        <li class="page-item @(pi.HasPrevious ? "": "disabled")">
+            <a class="page-link" asp-route-p="@(pi.CurrentPage -1)" asp-route-CategoryId="@Model.CategoryId" asp-route-BrandId="@Model.BrandId">Previous</a>
+        </li>
+        @*@for (int i = 1; i <= pi.TotalPages; i++)
+            {
+                <li class="page-item @(i == pi.CurrentPage ? "active" : "")">
+                    <a class="page-link" asp-route-p="@i" asp-route-CategoryId="@Model.CategoryId" asp-route-BrandId="@Model.BrandId">@i</a>
+                </li>
+            }*@
+
+        @foreach (int i in pi.PageNumbers)
+        {
+            if (i == -1)
+            {
+                <li class="page-item disabled">
+                    <a class="page-link">&hellip;</a>   <!--&hellip => ... için-->
+                </li>
+            }
+            else
+            {
+                <li class="page-item @(i == pi.CurrentPage ? "active" : "")">
+                    <a class="page-link" asp-route-p="@i" asp-route-CategoryId="@Model.CategoryId" asp-route-BrandId="@Model.BrandId">@i</a>
+                </li>
+            }
+        }
+
+        <li class="page-item @(pi.HasNext ? "": "disabled")">
+            <a class="page-link" asp-route-p="@(pi.CurrentPage +1)" asp-route-CategoryId="@Model.CategoryId" asp-route-BrandId="@Model.BrandId">Next</a>
+        </li>
+    </ul>
+</nav>
+
 
 

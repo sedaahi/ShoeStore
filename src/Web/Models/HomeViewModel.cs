@@ -14,5 +14,6 @@ namespace Web.Models
         public List<SelectListItem> Brands { get; set; }
         public int? CategoryId { get; set; } // Filtre verilmediğinde null olabilmesi için nullable yaptık (brand category filitreleri)
         public int? BrandId { get; set; }      //Bu sayede all göstereiblir
+        public PaginationInfoViewModel PaginationInfo { get; set; }
     }
 }
